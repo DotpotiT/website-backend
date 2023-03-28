@@ -39,16 +39,19 @@ mongoose
     });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://dotpotit.com", "https://dotpotit.com/admin"]
+  }));
 app.use('/uploads/conversation', express.static(__dirname + '/uploads/conversation'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/uploads/blogs', express.static(__dirname + '/uploads/blogs'));
+app.use('/uploads/response', express.static(__dirname + '/uploads/response'));
 
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://localhost:5174"],
+        origin: ["http://localhost:5173", "http://localhost:5174", "https://dotpotit.com", "https://dotpotit.com/admin"],
         methods: ["GET", "POST"],
     },
 });
@@ -93,8 +96,8 @@ app.use("/api/key_feature", c_keyFeatureRouters)
 app.use("/api/partnership_model", c_partnershipModelRoutes)
 app.use("/api/who_we_work_with", c_whoWeWorkWithRoutes)
 
+const port = 8800
 
-
-server.listen(8800, () => {
-    console.log("Backend server is running!");
+server.listen(port, () => {
+    console.log("Backend server is running! on port ", port);
 });
